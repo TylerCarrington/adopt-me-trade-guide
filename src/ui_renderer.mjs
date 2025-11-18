@@ -5,7 +5,7 @@ import {
   ADV_CONDITION_ID,
   ADV_VALUE_ID,
   NAME_FILTER_ID,
-  TREND_RARITY_FILTER_ID, 
+  TREND_RARITY_FILTER_ID,
 } from "./constants.mjs";
 import { formatForDisplay } from "./calculator.mjs";
 
@@ -41,7 +41,7 @@ function filterByName(data, nameFilterId) {
   // Get the search term from the new input field
   const nameFilter = document.getElementById(nameFilterId);
   if (!nameFilter) return data; // Defensive check
-  
+
   const nameSearchTerm = nameFilter.value.toLowerCase().trim();
 
   if (!nameSearchTerm) {
@@ -69,28 +69,28 @@ function filterData(data) {
   });
 
   filtered = filterByName(filtered, NAME_FILTER_ID);
-  
+
   // --- Advanced Filter Logic ---
   const { column, condition, value } = getAdvancedFilterCriteria();
 
-  if (column !== 'None' && condition !== 'None' && !isNaN(value)) {
-    filtered = filtered.filter(pet => {
+  if (column !== "None" && condition !== "None" && !isNaN(value)) {
+    filtered = filtered.filter((pet) => {
       const petValue = pet[column];
 
       if (petValue === null || petValue === undefined || isNaN(petValue)) {
-          return false; // Cannot compare if pet value is missing
+        return false; // Cannot compare if pet value is missing
       }
-      
+
       switch (condition) {
-          case '>':
-              return petValue > value;
-          case '<':
-              return petValue < value;
-          case '=':
-              // Use a small epsilon for floating point equality check
-              return Math.abs(petValue - value) < 0.001;
-          default:
-              return true;
+        case ">":
+          return petValue > value;
+        case "<":
+          return petValue < value;
+        case "=":
+          // Use a small epsilon for floating point equality check
+          return Math.abs(petValue - value) < 0.001;
+        default:
+          return true;
       }
     });
   }
@@ -104,7 +104,11 @@ function filterData(data) {
  * @param {Function} handleTradeRecommendation - Function to call when a trade rec button is clicked.
  * @param {Function} handleHeaderClick - Function to call when a header is clicked for sorting.
  */
-export function applyFiltersAndSort(data, handleTradeRecommendation, handleHeaderClick) {
+export function applyFiltersAndSort(
+  data,
+  handleTradeRecommendation,
+  handleHeaderClick
+) {
   let filteredData = filterData(data);
 
   // Sort logic (using currentSort state)
@@ -117,8 +121,8 @@ export function applyFiltersAndSort(data, handleTradeRecommendation, handleHeade
     const isBNull = bVal === null || bVal === undefined || isNaN(bVal);
 
     if (isANull && isBNull) return 0;
-    if (isANull) return currentSort.direction === 'desc' ? 1 : -1;
-    if (isBNull) return currentSort.direction === 'desc' ? -1 : 1;
+    if (isANull) return currentSort.direction === "desc" ? 1 : -1;
+    if (isBNull) return currentSort.direction === "desc" ? -1 : 1;
 
     if (aVal < bVal) return currentSort.direction === "asc" ? -1 : 1;
     if (aVal > bVal) return currentSort.direction === "asc" ? 1 : -1;
@@ -135,7 +139,11 @@ export function applyFiltersAndSort(data, handleTradeRecommendation, handleHeade
  * @param {Function} showTradeRecommendations - Callback to show trade recommendations.
  * @param {Function} handleValueHeaderClick - Callback to handle header clicks.
  */
-export function renderResults(data, showTradeRecommendations, handleValueHeaderClick) {
+export function renderResults(
+  data,
+  showTradeRecommendations,
+  handleValueHeaderClick
+) {
   const container = document.getElementById(RESULTS_CONTAINER_ID);
   if (!container) return;
 
@@ -144,16 +152,66 @@ export function renderResults(data, showTradeRecommendations, handleValueHeaderC
     { key: "image_url", display: "Pet", sortable: false, class: "pet-name" },
     { key: "rarity", display: "Rarity", sortable: true, class: "rarity-cell" },
     { key: "year", display: "Year", sortable: true, class: "year-cell" },
-    { key: "Regular Value", display: "Value", sortable: true, class: "calculation" },
-    { key: "Neon Value", display: "Neon", sortable: true, class: "calculation" },
-    { key: "Mega Value", display: "Mega", sortable: true, class: "calculation" },
-    { key: "Neon Rate (N/R)", display: "N Rate", sortable: true, class: "calculation" },
-    { key: "Neon Gain (N-4R)", display: "N Gain (V)", sortable: true, class: "calculation" },
-    { key: "Weighted Neon Gain", display: "N Gain (W)", sortable: true, class: "calculation" },
-    { key: "Mega Rate (M/N)", display: "M Rate", sortable: true, class: "calculation" },
-    { key: "Mega Gain (M-4N)", display: "M Gain (V)", sortable: true, class: "calculation" },
-    { key: "Weighted Mega Gain", display: "M Gain (W)", sortable: true, class: "calculation" },
-    { key: "Trade Rec", display: "Trade Rec", sortable: false, class: "trade-rec" },
+    {
+      key: "Regular Value",
+      display: "Value",
+      sortable: true,
+      class: "calculation",
+    },
+    {
+      key: "Neon Value",
+      display: "Neon",
+      sortable: true,
+      class: "calculation",
+    },
+    {
+      key: "Mega Value",
+      display: "Mega",
+      sortable: true,
+      class: "calculation",
+    },
+    {
+      key: "Neon Rate (N/R)",
+      display: "N Rate",
+      sortable: true,
+      class: "calculation",
+    },
+    {
+      key: "Neon Gain (N-4R)",
+      display: "N Gain (V)",
+      sortable: true,
+      class: "calculation",
+    },
+    {
+      key: "Weighted Neon Gain",
+      display: "N Gain (W)",
+      sortable: true,
+      class: "calculation",
+    },
+    {
+      key: "Mega Rate (M/N)",
+      display: "M Rate",
+      sortable: true,
+      class: "calculation",
+    },
+    {
+      key: "Mega Gain (M-4N)",
+      display: "M Gain (V)",
+      sortable: true,
+      class: "calculation",
+    },
+    {
+      key: "Weighted Mega Gain",
+      display: "M Gain (W)",
+      sortable: true,
+      class: "calculation",
+    },
+    {
+      key: "Trade Rec",
+      display: "Trade Rec",
+      sortable: false,
+      class: "trade-rec",
+    },
   ];
 
   // 2. Build the table HTML
@@ -175,10 +233,13 @@ export function renderResults(data, showTradeRecommendations, handleValueHeaderC
     tableHTML += "<tr>";
     headers.forEach((h) => {
       let cellClass = h.class || "";
-      let displayValue = pet[h.key] === null || pet[h.key] === undefined ? "—" : pet[h.key];
+      let displayValue =
+        pet[h.key] === null || pet[h.key] === undefined ? "—" : pet[h.key];
 
       if (h.key === "image_url") {
-        const imageUrl = pet["image_url"] || 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+        const imageUrl =
+          pet["image_url"] ||
+          "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
         // 🟢 FIX: Added data-pet-name attribute to make the name clickable
         displayValue = `<img src="${imageUrl}" alt="${pet.name}" style="height:24px; vertical-align:middle; margin-right:8px; border-radius: 4px;"> <span class="trade-link" data-pet-name="${pet.name}">${pet.name}</span>`;
         cellClass = "pet-name";
@@ -203,26 +264,25 @@ export function renderResults(data, showTradeRecommendations, handleValueHeaderC
   tableHTML += "</tbody></table>";
 
   container.innerHTML = tableHTML;
-  
+
   // Re-attach listeners for sortable headers (Value Analysis headers)
-  container.querySelectorAll('.sortable-header').forEach(header => {
-    header.removeEventListener('click', handleValueHeaderClick);
-    header.addEventListener('click', handleValueHeaderClick);
+  container.querySelectorAll(".sortable-header").forEach((header) => {
+    header.removeEventListener("click", handleValueHeaderClick);
+    header.addEventListener("click", handleValueHeaderClick);
   });
-  
+
   // Re-attach listeners for Trade Rec buttons
-  container.querySelectorAll('.recommend-button').forEach(button => {
-    button.removeEventListener('click', showTradeRecommendations);
-    button.addEventListener('click', showTradeRecommendations);
+  container.querySelectorAll(".recommend-button").forEach((button) => {
+    button.removeEventListener("click", showTradeRecommendations);
+    button.addEventListener("click", showTradeRecommendations);
   });
 
   // 🟢 NEW: Attach listeners to pet name links 🟢
-  container.querySelectorAll('.trade-link').forEach(link => {
-    link.removeEventListener('click', showTradeRecommendations);
-    link.addEventListener('click', showTradeRecommendations);
+  container.querySelectorAll(".trade-link").forEach((link) => {
+    link.removeEventListener("click", showTradeRecommendations);
+    link.addEventListener("click", showTradeRecommendations);
   });
 }
-
 
 /**
  * Populates the Rarity filter dropdown for the Value Analysis tab.
@@ -232,7 +292,9 @@ export function populateRarityFilter(data) {
   const select = document.getElementById(RARITY_FILTER_ID);
   if (!select) return;
 
-  const rarities = ['All', ...new Set(data.map((pet) => pet.rarity))].filter(r => r).sort();
+  const rarities = ["All", ...new Set(data.map((pet) => pet.rarity))]
+    .filter((r) => r)
+    .sort();
 
   select
     .querySelectorAll('option:not([value="All"])')
@@ -241,13 +303,13 @@ export function populateRarityFilter(data) {
   rarities.forEach((rarity) => {
     // Only add non-empty rarities
     if (rarity) {
-        const option = document.createElement("option");
-        option.value = rarity;
-        option.textContent = rarity;
-        select.appendChild(option);
+      const option = document.createElement("option");
+      option.value = rarity;
+      option.textContent = rarity;
+      select.appendChild(option);
     }
   });
-  
+
   // 🟢 FIX: Ensure the filter is set to "All" after options are populated
   select.value = "All";
 }
@@ -260,7 +322,9 @@ export function populateTrendRarityFilter(data) {
   const select = document.getElementById(TREND_RARITY_FILTER_ID);
   if (!select) return;
 
-  const rarities = [...new Set(data.map((pet) => pet.rarity))].filter(r => r).sort();
+  const rarities = ["All", ...new Set(data.map((pet) => pet.rarity))]
+    .filter((r) => r)
+    .sort();
 
   select
     .querySelectorAll('option:not([value="All"])')
@@ -269,10 +333,10 @@ export function populateTrendRarityFilter(data) {
   rarities.forEach((rarity) => {
     // Only add non-empty rarities
     if (rarity) {
-        const option = document.createElement("option");
-        option.value = rarity;
-        option.textContent = rarity;
-        select.appendChild(option);
+      const option = document.createElement("option");
+      option.value = rarity;
+      option.textContent = rarity;
+      select.appendChild(option);
     }
   });
 
@@ -281,21 +345,26 @@ export function populateTrendRarityFilter(data) {
 }
 
 // 🟢 MODIFIED: Accepts an ID and a flag to populate any advanced filter 🟢
-export function populateAdvancedFilterControls(columnSelectId, includeTrendColumns = false) {
+export function populateAdvancedFilterControls(
+  columnSelectId,
+  includeTrendColumns = false
+) {
   const columnSelect = document.getElementById(columnSelectId);
-  
+
   if (!columnSelect) {
-      console.error(`Filter control with ID ${columnSelectId} not found. Skipping population.`);
-      return; 
+    console.error(
+      `Filter control with ID ${columnSelectId} not found. Skipping population.`
+    );
+    return;
   }
-  
+
   let filterableColumns = [
     "Regular Value",
     "Neon Value",
     "Mega Value",
     "Neon Rate (N/R)",
     "Neon Gain (N-4R)",
-    "Weighted Neon Gain", 
+    "Weighted Neon Gain",
     "Mega Rate (M/N)",
     "Mega Gain (M-4N)",
     "Weighted Mega Gain",
@@ -304,11 +373,14 @@ export function populateAdvancedFilterControls(columnSelectId, includeTrendColum
 
   // If it's the trend tab, add the trend-specific columns
   if (includeTrendColumns) {
-      filterableColumns.push(
-          "Value Change", "Value Change %",
-          "Neon Change", "Neon Change %",
-          "Mega Change", "Mega Change %"
-      );
+    filterableColumns.push(
+      "Value Change",
+      "Value Change %",
+      "Neon Change",
+      "Neon Change %",
+      "Mega Change",
+      "Mega Change %"
+    );
   }
 
   columnSelect.innerHTML = '<option value="None">-- Select Value --</option>';
@@ -325,11 +397,11 @@ export function populateAdvancedFilterControls(columnSelectId, includeTrendColum
  * 🟢 NEW: Export a function to reset controls, used by clearAdvancedFilter in index.mjs 🟢
  */
 export function resetAdvancedFilterControls(columnId, conditionId, valueId) {
-    const columnSelect = document.getElementById(columnId);
-    const conditionSelect = document.getElementById(conditionId);
-    const valueInput = document.getElementById(valueId);
+  const columnSelect = document.getElementById(columnId);
+  const conditionSelect = document.getElementById(conditionId);
+  const valueInput = document.getElementById(valueId);
 
-    if (columnSelect) columnSelect.value = 'None';
-    if (conditionSelect) conditionSelect.value = 'None';
-    if (valueInput) valueInput.value = '';
+  if (columnSelect) columnSelect.value = "None";
+  if (conditionSelect) conditionSelect.value = "None";
+  if (valueInput) valueInput.value = "";
 }
