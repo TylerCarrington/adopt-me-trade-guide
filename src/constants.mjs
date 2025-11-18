@@ -34,6 +34,9 @@ export const TREND_CLEAR_FILTER_BUTTON_ID = 'trendClearFilterButton';
 
 export const REFRESH_DATA_BUTTON_ID = 'refreshDataButton';
 
+// NEW: Inventory Tab ID 
+export const INVENTORY_LIST_ID = 'inventory-list';
+
 export const TASK_COUNTS = {
     'Common': 100,
     'Uncommon': 144,

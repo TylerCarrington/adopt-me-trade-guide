@@ -232,7 +232,7 @@ export function populateRarityFilter(data) {
   const select = document.getElementById(RARITY_FILTER_ID);
   if (!select) return;
 
-  const rarities = [...new Set(data.map((pet) => pet.rarity))].filter(r => r).sort();
+  const rarities = ['All', ...new Set(data.map((pet) => pet.rarity))].filter(r => r).sort();
 
   select
     .querySelectorAll('option:not([value="All"])')
@@ -247,6 +247,9 @@ export function populateRarityFilter(data) {
         select.appendChild(option);
     }
   });
+  
+  // 🟢 FIX: Ensure the filter is set to "All" after options are populated
+  select.value = "All";
 }
 
 /**
@@ -272,6 +275,9 @@ export function populateTrendRarityFilter(data) {
         select.appendChild(option);
     }
   });
+
+  // 🟢 FIX: Ensure the filter is set to "All" after options are populated
+  select.value = "All";
 }
 
 // 🟢 MODIFIED: Accepts an ID and a flag to populate any advanced filter 🟢
