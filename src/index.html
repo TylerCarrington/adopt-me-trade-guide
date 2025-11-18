@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adopt Me Pet Value Tracker</title>
+    <style>
+        body { 
+            padding: 20px; 
+            font-family: 'Inter', sans-serif; 
+            background-color: #f4f7f9;
+        }
+
+        /* 🟢 NEW: Header Styling 🟢 */
+        .header-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        
+        h1 { 
+            text-align: center; 
+            color: #4CAF50; 
+            margin: 0; /* Remove default margin */
+            padding-right: 15px; /* Space between title and button */
+        }
+        
+        /* 🟢 NEW: Refresh Button Styling 🟢 */
+        #refreshDataButton {
+            padding: 8px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            transition: background-color 0.2s;
+        }
+        
+        #refreshDataButton:hover {
+            background-color: #45a049;
+        }
+        
+        /* --- Tab Styling --- */
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid #ddd;
+            margin-bottom: 20px;
+        }
+
+        .tab-button {
+            padding: 10px 20px;
+            cursor: pointer;
+            border: none;
+            background-color: transparent;
+            font-size: 16px;
+            font-weight: 500;
+            color: #555;
+            transition: color 0.2s, border-bottom 0.2s;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px; /* Pull tab over the bottom border */
+        }
+
+        .tab-button:hover {
+            color: #333;
+        }
+
+        .tab-button.active {
+            color: #4CAF50;
+            border-bottom: 3px solid #4CAF50;
+            font-weight: 700;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 10px 0;
+            border-top: 2px solid #f4f7f9; /* Visual separation from tabs */
+        }
+        
+        .tab-content h2 {
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        /* --- Input and Controls Styling --- */
+        .input-section {
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .filter-controls, .advanced-filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 10px;
+            align-items: center;
+        }
+        
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            min-width: 150px;
+        }
+        
+        .filter-group label {
+            font-weight: 500;
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        .filter-group select, .filter-group input, .input-section button {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .input-section button {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .input-section button:hover {
+            background-color: #0056b3;
+        }
+        
+        /* --- Table Styling --- */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background-color: #f7f7f7;
+            font-weight: 600;
+            color: #333;
+            cursor: pointer;
+            user-select: none;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        tr:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* --- Specific Cell Styling --- */
+        .calculation {
+            font-family: monospace;
+            text-align: right;
+            min-width: 100px;
+        }
+        .pet-name {
+            font-weight: 500;
+            white-space: nowrap;
+            cursor: pointer;
+            color: #007bff;
+        }
+        .pet-name:hover {
+            text-decoration: underline;
+        }
+        .rarity-cell {
+            white-space: nowrap;
+        }
+        .trade-rec {
+             text-align: center;
+        }
+        .recommend-button {
+            padding: 5px 10px !important;
+            font-size: 12px;
+            background-color: #ff9800 !important;
+            transition: background-color 0.2s;
+            white-space: nowrap;
+        }
+        .recommend-button:hover {
+            background-color: #e68900 !important;
+        }
+        
+        /* --- Trend Analysis Specific Styling --- */
+        .gain-win {
+            color: #4CAF50;
+            font-weight: bold;
+        }
+        .gain-loss {
+            color: #f44336;
+            font-weight: bold;
+        }
+
+        /* --- Modal Styling --- */
+        #trade-recommendations {
+            display: none; /* Hidden by default */
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+            backdrop-filter: blur(2px);
+        }
+
+        #trade-recommendations-content {
+            background-color: #fefefe;
+            margin: 10% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 90%;
+            max-width: 800px;
+            border-radius: 8px;
+            position: relative;
+            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+        }
+
+        #close-rec-button {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #aaa;
+            padding: 0;
+            background: none;
+            border: none;
+        }
+
+        #close-rec-button:hover,
+        #close-rec-button:focus {
+            color: #333;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        
+        #recommendation-details {
+            max-height: 70vh;
+            overflow-y: auto;
+            margin-top: 15px;
+            padding-right: 10px;
+        }
+        
+        .recommendation-group {
+            border: 1px solid #eee;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 6px;
+            background-color: #f9f9f9;
+        }
+        .recommendation-group h4 {
+            margin-top: 0;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+        }
+    </style>
+    <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+
+    <div class="header-container">
+        <h1>Adopt Me Pet Value Tracker</h1>
+        <button id="refreshDataButton">🔄 Refresh Data</button>
+    </div>
+    <div class="tabs">
+        <button class="tab-button active" onclick="showTab('value-analysis-tab')">Value Analysis</button>
+        <button class="tab-button" onclick="showTab('trend-analysis-tab')">Trend Analyzer</button>
+        <button class="tab-button" onclick="showTab('pet-inventory-tab')">Pet Inventory (WIP)</button>
+    </div>
+
+    <div id="value-analysis-tab" class="tab-content" style="display: block;">
+        <div class="input-section">
+            <h2>Value Filters</h2>
+            <div class="filter-controls">
+                <div class="filter-group">
+                    <label for="rarityFilter">Filter by Rarity:</label>
+                    <select id="rarityFilter">
+                        <option value="All">All Rarities</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="nameFilter">Search by Name:</label>
+                    <input type="text" id="nameFilter" placeholder="e.g. Shadow Dragon">
+                </div>
+            </div>
+            
+            <h2 style="margin-top: 20px;">Advanced Filters</h2>
+            <div class="advanced-filters">
+                <div class="filter-group">
+                    <label for="advFilterColumn">Value/Metric:</label>
+                    <select id="advFilterColumn">
+                        <option value="None">-- Select Value --</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="advFilterCondition">Condition:</label>
+                    <select id="advFilterCondition">
+                        <option value="None">-- Select Condition --</option>
+                        <option value=">">Greater Than (&gt;)</option>
+                        <option value="<">Less Than (&lt;)</option>
+                        <option value="=">Equal To (=)</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="advFilterValue">Target Value:</label>
+                    <input type="number" step="0.01" id="advFilterValue" placeholder="e.g. 1.5">
+                </div>
+                <div>
+                    <button id="applyFilterButton" style="margin-top: 20px;">Apply Filter</button>
+                    <button id="clearFilterButton" style="margin-top: 20px; background-color: #dc3545;">Clear</button>
+                </div>
+            </div>
+        </div>
+        
+        <div id="results">
+            <p>Loading pet data. Please wait...</p>
+        </div>
+    </div>
+    <div id="trend-analysis-tab" class="tab-content">
+        <div class="input-section">
+            <h2>Trend Filters</h2>
+             <div class="filter-controls">
+                <div class="filter-group">
+                    <label for="trendPeriodSelector">Period:</label>
+                    <select id="trendPeriodSelector">
+                        <option value="7">Last 7 Days</option>
+                        <option value="14">Last 14 Days</option>
+                        <option value="30">Last 30 Days</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="trendRarityFilter">Filter by Rarity:</label>
+                    <select id="trendRarityFilter">
+                        <option value="All">All Rarities</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="trendNameFilter">Search by Name:</label>
+                    <input type="text" id="trendNameFilter" placeholder="e.g. Shadow Dragon">
+                </div>
+            </div>
+
+            <h2 style="margin-top: 20px;">Advanced Filters</h2>
+            <div class="advanced-filters">
+                <div class="filter-group">
+                    <label for="trendAdvFilterColumn">Trend Metric:</label>
+                    <select id="trendAdvFilterColumn">
+                        <option value="None">-- Select Trend --</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="trendAdvFilterCondition">Condition:</label>
+                    <select id="trendAdvFilterCondition">
+                        <option value="None">-- Select Condition --</option>
+                        <option value=">">Greater Than (&gt;)</option>
+                        <option value="<">Less Than (&lt;)</option>
+                        <option value="=">Equal To (=)</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="trendAdvFilterValue">Target Value:</label>
+                    <input type="number" step="0.01" id="trendAdvFilterValue" placeholder="e.g. 5 (for percent)">
+                </div>
+                <div>
+                    <button id="trendApplyFilterButton" style="margin-top: 20px;">Apply Filter</button>
+                    <button id="trendClearFilterButton" style="margin-top: 20px; background-color: #dc3545;">Clear</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="trend-results" style="margin-top: 20px;">
+            <p>Loading trend data...</p>
+        </div>
+    </div>
+    <div id="pet-inventory-tab" class="tab-content">
+        <div class="input-section">
+            <h2>Your Pet Inventory</h2>
+            <p>This feature will allow you to manage and track the specific pets you own, using the current pet values for a real-time inventory worth calculation.</p>
+            <button>Add Pet to Inventory (Coming Soon)</button>
+            <div id="inventory-list" style="margin-top: 15px;">
+                <p>Inventory list coming soon...</p>
+            </div>
+        </div>
+    </div>
+    <div id="trade-recommendations">
+        <div id="trade-recommendations-content">
+            <button id="close-rec-button">&times;</button>
+            <h3>Trade Recommendations</h3>
+            <div id="recommendation-details"></div>
+        </div>
+    </div>
+
+    <script type="module" src="./index.mjs"></script>
+</body>
+</html>
