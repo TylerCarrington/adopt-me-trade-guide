@@ -1,19 +1,30 @@
 {
-  "name": "javascript",
-  "version": "1.0.0",
-  "description": "The JavaScript template",
+  "name": "adopt-me-trade-guide",
+  "version": "2.0.0",
+  "description": "Adopt Me Pet Value Tracker - React Edition",
+  "type": "module",
   "scripts": {
-    "start": "parcel ./src/index.html",
-    "build": "parcel build ./src/index.html"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint src/"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "babel-eslint": "^10.1.0",
-    "eslint": "^7.2.0",
-    "parcel": "^2.0.0"
+    "@vitejs/plugin-react": "^4.2.0",
+    "eslint": "^8.54.0",
+    "sass": "^1.69.0",
+    "terser": "^5.44.1",
+    "vite": "^5.0.0"
   },
   "keywords": [
-    "css",
-    "javascript"
-  ],
-  "dependencies": {}
+    "adopt-me",
+    "trading",
+    "value-tracker",
+    "react",
+    "vite"
+  ]
 }

@@ -32,7 +32,8 @@ export function calculatePetMetrics(pets) {
             'Weighted Neon Gain': weightedNeonGain, 
             'Mega Rate (M/N)': megaRate,
             'Mega Gain (M-4N)': megaGain,
-            'Weighted Mega Gain': weightedMegaGain, 
+            'Weighted Mega Gain': weightedMegaGain,
+            'Tasks': tasks,
         };
     });
 }
