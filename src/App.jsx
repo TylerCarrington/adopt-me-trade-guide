@@ -55,6 +55,7 @@ function App() {
         <InventoryTab
           tabId="inventory"
           isActive={activeTab === 'inventory'}
+          onSelectPet={handleSelectPet}
         />
       </TabContainer>
       {state.showModal && state.selectedPet && (
