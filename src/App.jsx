@@ -17,7 +17,8 @@ function App() {
   const { filteredData, filters, sort, updateFilter, resetFilters, updateSort } = useFilters();
 
   const handleRefresh = () => {
-    loadData();
+    // Call with forceRefresh=true to bypass cache and fetch fresh data
+    loadData(true);
   };
 
   const handleSelectPet = (pet) => {

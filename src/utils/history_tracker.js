@@ -48,6 +48,17 @@ export function loadHistory() {
 }
 
 /**
+ * Checks if we already have today's snapshot cached.
+ * @returns {Object|null} Today's snapshot if it exists, null otherwise.
+ */
+export function getTodaySnapshot() {
+  const history = loadHistory();
+  const today = getTodayDate();
+  const todaySnapshot = history.find((snapshot) => snapshot.date === today);
+  return todaySnapshot || null;
+}
+
+/**
  * Saves a new daily snapshot of pet data to local storage, including all necessary values and the image URL.
  * @param {Array<Object>} currentPetData An array of pet data objects from the latest scrape.
  * @returns {void}
