@@ -1,0 +1,178 @@
+.trend-table-container {
+  overflow-x: auto;
+  margin-top: 20px;
+}
+
+.trend-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.trend-table thead {
+  background-color: #3d5a80;
+  color: white;
+}
+
+.trend-table th {
+  padding: 12px 10px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 13px;
+  user-select: none;
+  border-right: 1px solid #2d4563;
+}
+
+.trend-table th:last-child {
+  border-right: none;
+}
+
+.trend-table th.sortable {
+  cursor: pointer;
+  background-color: #4a6fa5;
+}
+
+.trend-table th.sortable:hover {
+  background-color: #3d5a80;
+}
+
+.trend-table th.sort-asc,
+.trend-table th.sort-desc {
+  background-color: #2d4563;
+}
+
+.sort-indicator {
+  margin-left: 5px;
+  font-size: 0.9em;
+}
+
+.trend-table tbody tr {
+  border-bottom: 1px solid #eee;
+  transition: background-color 0.2s;
+}
+
+.trend-table tbody tr:hover {
+  background-color: #f9f9f9;
+}
+
+.trend-table td {
+  padding: 12px 10px;
+  font-size: 13px;
+  color: #333;
+}
+
+.trend-table .pet-image {
+  text-align: center;
+  font-weight: 600;
+}
+
+.trend-table .pet-image img {
+  max-width: 40px;
+  max-height: 40px;
+  object-fit: contain;
+}
+
+.trend-table .rarity,
+.trend-table .year {
+  text-align: center;
+  font-size: 12px;
+  color: #666;
+}
+
+.trend-table .value {
+  text-align: right;
+  font-weight: 500;
+  color: #2c3e50;
+}
+
+.trend-table .change {
+  text-align: right;
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.trend-table .change.positive {
+  color: #27ae60;
+}
+
+.trend-table .change.negative {
+  color: #e74c3c;
+}
+
+.trend-table .change.neutral {
+  color: #666;
+}
+
+.trend-table .change-percent {
+  text-align: right;
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.trend-table .change-percent.positive {
+  color: #27ae60;
+  background-color: #ecf0f1;
+  border-radius: 3px;
+}
+
+.trend-table .change-percent.negative {
+  color: #e74c3c;
+  background-color: #ecf0f1;
+  border-radius: 3px;
+}
+
+.trend-table .change-percent.neutral {
+  color: #666;
+}
+
+.no-data {
+  text-align: center;
+  padding: 40px;
+  color: #999;
+  font-style: italic;
+}
+
+@media (max-width: 1024px) {
+  .trend-table {
+    font-size: 12px;
+  }
+
+  .trend-table th,
+  .trend-table td {
+    padding: 8px 6px;
+  }
+
+  .trend-table .pet-image img {
+    max-width: 32px;
+    max-height: 32px;
+  }
+}
+
+@media (max-width: 768px) {
+  .trend-table-container {
+    margin-left: -15px;
+    margin-right: -15px;
+    overflow-x: auto;
+  }
+
+  .trend-table {
+    font-size: 11px;
+  }
+
+  .trend-table th,
+  .trend-table td {
+    padding: 6px 4px;
+  }
+
+  .trend-table .pet-image img {
+    max-width: 28px;
+    max-height: 28px;
+  }
+
+  .sort-indicator {
+    display: none;
+  }
+}
