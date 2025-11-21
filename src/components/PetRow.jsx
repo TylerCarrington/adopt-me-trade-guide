@@ -3,7 +3,7 @@ import { formatForDisplay } from '../utils/calculator.js';
 const PetRow = ({ pet, onSelectPet }) => {
   return (
     <tr>
-      <td className="pet-name">
+      <td className="pet-name" onClick={() => onSelectPet(pet)}>
         <img
           src={pet.image_url}
           alt={pet.name}
