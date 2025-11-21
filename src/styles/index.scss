@@ -214,12 +214,11 @@ tbody tr:hover {
 
 /* Specific Cell Styling */
 .calculation {
-  font-family: 'Courier New', monospace;
   text-align: right;
   min-width: 100px;
 }
 
-.pet-name {
+td.pet-name {
   font-weight: 500;
   white-space: nowrap;
   cursor: pointer;
