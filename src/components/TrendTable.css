@@ -32,16 +32,15 @@
 
 .trend-table th.sortable {
   cursor: pointer;
-  background-color: #4a6fa5;
 }
 
 .trend-table th.sortable:hover {
-  background-color: #3d5a80;
+  background-color: #a7a7a7;
 }
 
 .trend-table th.sort-asc,
 .trend-table th.sort-desc {
-  background-color: #2d4563;
+  background-color: #c9c9c9;
 }
 
 .sort-indicator {

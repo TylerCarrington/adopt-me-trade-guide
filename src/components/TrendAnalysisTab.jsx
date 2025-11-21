@@ -6,7 +6,8 @@ import TrendTable from './TrendTable';
 import './TrendAnalysisTab.css';
 
 const TrendAnalysisTab = ({ tabId, onSelectPet, isActive }) => {
-  const { petData, historySnapshots } = usePetDataContext();
+  const { state } = usePetDataContext();
+  const { petData, historySnapshots } = state;
 
   const {
     filteredTrendData,

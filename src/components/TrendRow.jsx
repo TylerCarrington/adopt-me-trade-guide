@@ -19,7 +19,10 @@ const TrendRow = ({ pet }) => {
     <tr className="trend-row">
       <td className="pet-image">
         {pet.image_url ? (
+          <div>
           <img src={pet.image_url} alt={pet.name} title={pet.name} />
+          <span>{pet.name}</span>
+          </div>
         ) : (
           <span>{pet.name}</span>
         )}

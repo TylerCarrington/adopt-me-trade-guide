@@ -17,10 +17,22 @@
   min-width: 60px;
 }
 
+.pet-image div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-direction: column;
+}
+
 .pet-image img {
   max-width: 45px;
   max-height: 45px;
   object-fit: contain;
+  display: inline-block;
+}
+
+.pet-image span {
   display: inline-block;
 }
 
