@@ -48,7 +48,7 @@ const PetTable = ({ data, sort, onHeaderClick, onSelectPet }) => {
 
   const renderHeaderCell = (header) => {
     if (!header.sortable) {
-      return <th className={header.class}>{header.display}</th>;
+      return <th key={header.key} className={header.class}>{header.display}</th>;
     }
 
     const isSorted = sort.column === header.key;
