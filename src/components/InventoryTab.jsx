@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { usePetDataContext } from '../hooks/usePetDataContext';
 import { useInventory } from '../hooks/useInventory';
 import { formatForDisplay } from '../utils/calculator.js';
@@ -8,6 +8,8 @@ const InventoryTab = ({ tabId, isActive, onSelectPet }) => {
   const { state } = usePetDataContext();
   const { inventory, incrementInventory } = useInventory();
   const petData = state.petData || [];
+  
+  const [sort, setSort] = useState({ column: 'name', direction: 'asc' });
 
   // Calculate total inventory value
   const calculateTotalValue = () => {
@@ -28,6 +30,11 @@ const InventoryTab = ({ tabId, isActive, onSelectPet }) => {
     .filter(([_, counts]) => counts.regular > 0 || counts.neon > 0 || counts.mega > 0)
     .map(([petName, counts]) => {
       const petInfo = petData.find(p => p.name === petName);
+      const regTotal = (petInfo?.['Regular Value'] || 0) * (counts.regular || 0);
+      const neonTotal = (petInfo?.['Neon Value'] || 0) * (counts.neon || 0);
+      const megaTotal = (petInfo?.['Mega Value'] || 0) * (counts.mega || 0);
+      const itemTotal = regTotal + neonTotal + megaTotal;
+      
       return {
         name: petName,
         counts,
@@ -38,15 +45,80 @@ const InventoryTab = ({ tabId, isActive, onSelectPet }) => {
           'Mega Value': 0,
           rarity: 'Unknown',
         },
+        regTotal,
+        neonTotal,
+        megaTotal,
+        itemTotal,
       };
     })
-    .sort((a, b) => a.name.localeCompare(b.name));
+    .sort((a, b) => {
+      let aVal, bVal;
+      
+      switch (sort.column) {
+        case 'name':
+          aVal = a.name;
+          bVal = b.name;
+          break;
+        case 'rarity':
+          aVal = a.petInfo.rarity;
+          bVal = b.petInfo.rarity;
+          break;
+        case 'regular':
+          aVal = a.counts.regular;
+          bVal = b.counts.regular;
+          break;
+        case 'regularValue':
+          aVal = a.regTotal;
+          bVal = b.regTotal;
+          break;
+        case 'neon':
+          aVal = a.counts.neon;
+          bVal = b.counts.neon;
+          break;
+        case 'neonValue':
+          aVal = a.neonTotal;
+          bVal = b.neonTotal;
+          break;
+        case 'mega':
+          aVal = a.counts.mega;
+          bVal = b.counts.mega;
+          break;
+        case 'megaValue':
+          aVal = a.megaTotal;
+          bVal = b.megaTotal;
+          break;
+        case 'total':
+          aVal = a.itemTotal;
+          bVal = b.itemTotal;
+          break;
+        default:
+          return 0;
+      }
+      
+      if (typeof aVal === 'string') {
+        return sort.direction === 'asc' 
+          ? aVal.localeCompare(bVal)
+          : bVal.localeCompare(aVal);
+      }
+      
+      if (aVal < bVal) return sort.direction === 'asc' ? -1 : 1;
+      if (aVal > bVal) return sort.direction === 'asc' ? 1 : -1;
+      return 0;
+    });
 
   const totalValue = calculateTotalValue();
 
-  if (!isActive) {
-    return null;
-  }
+  const handleSort = (column) => {
+    setSort(prev => ({
+      column,
+      direction: prev.column === column && prev.direction === 'asc' ? 'desc' : 'asc'
+    }));
+  };
+
+  const getSortIndicator = (column) => {
+    if (sort.column !== column) return '';
+    return sort.direction === 'asc' ? '↑' : '↓';
+  };
 
   return (
     <div id={tabId} className={`tab-content ${isActive ? 'active' : ''}`}>
@@ -79,15 +151,69 @@ const InventoryTab = ({ tabId, isActive, onSelectPet }) => {
         <table className="inventory-table">
           <thead>
             <tr>
-              <th className="pet-name">Pet Name</th>
-              <th className="rarity">Rarity</th>
-              <th className="inventory-count">Regular</th>
-              <th className="inventory-value">Regular Value</th>
-              <th className="inventory-count">Neon</th>
-              <th className="inventory-value">Neon Value</th>
-              <th className="inventory-count">Mega</th>
-              <th className="inventory-value">Mega Value</th>
-              <th className="total-value">Total Value</th>
+              <th 
+                className={`pet-name sortable ${sort.column === 'name' ? 'sorted' : ''}`}
+                onClick={() => handleSort('name')}
+                title="Click to sort by pet name"
+              >
+                Pet Name {getSortIndicator('name')}
+              </th>
+              <th 
+                className={`rarity sortable ${sort.column === 'rarity' ? 'sorted' : ''}`}
+                onClick={() => handleSort('rarity')}
+                title="Click to sort by rarity"
+              >
+                Rarity {getSortIndicator('rarity')}
+              </th>
+              <th 
+                className={`inventory-count sortable ${sort.column === 'regular' ? 'sorted' : ''}`}
+                onClick={() => handleSort('regular')}
+                title="Click to sort by regular count"
+              >
+                Regular {getSortIndicator('regular')}
+              </th>
+              <th 
+                className={`inventory-value sortable ${sort.column === 'regularValue' ? 'sorted' : ''}`}
+                onClick={() => handleSort('regularValue')}
+                title="Click to sort by regular value"
+              >
+                Regular Value {getSortIndicator('regularValue')}
+              </th>
+              <th 
+                className={`inventory-count sortable ${sort.column === 'neon' ? 'sorted' : ''}`}
+                onClick={() => handleSort('neon')}
+                title="Click to sort by neon count"
+              >
+                Neon {getSortIndicator('neon')}
+              </th>
+              <th 
+                className={`inventory-value sortable ${sort.column === 'neonValue' ? 'sorted' : ''}`}
+                onClick={() => handleSort('neonValue')}
+                title="Click to sort by neon value"
+              >
+                Neon Value {getSortIndicator('neonValue')}
+              </th>
+              <th 
+                className={`inventory-count sortable ${sort.column === 'mega' ? 'sorted' : ''}`}
+                onClick={() => handleSort('mega')}
+                title="Click to sort by mega count"
+              >
+                Mega {getSortIndicator('mega')}
+              </th>
+              <th 
+                className={`inventory-value sortable ${sort.column === 'megaValue' ? 'sorted' : ''}`}
+                onClick={() => handleSort('megaValue')}
+                title="Click to sort by mega value"
+              >
+                Mega Value {getSortIndicator('megaValue')}
+              </th>
+              <th 
+                className={`total-value sortable ${sort.column === 'total' ? 'sorted' : ''}`}
+                onClick={() => handleSort('total')}
+                title="Click to sort by total value"
+              >
+                Total Value {getSortIndicator('total')}
+              </th>
             </tr>
           </thead>
           <tbody>

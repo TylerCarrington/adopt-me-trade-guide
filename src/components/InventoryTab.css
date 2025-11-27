@@ -88,6 +88,21 @@
   white-space: nowrap;
 }
 
+.inventory-table th.sortable {
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.2s;
+}
+
+.inventory-table th.sortable:hover {
+  background-color: #efefef;
+}
+
+.inventory-table th.sorted {
+  background-color: #e8f4fd;
+  color: #0066cc;
+}
+
 .inventory-table td {
   padding: 12px 10px;
   border-bottom: 1px solid #eee;
