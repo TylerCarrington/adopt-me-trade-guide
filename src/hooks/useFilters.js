@@ -67,8 +67,13 @@ export const useFilters = () => {
 
     // Sort
     const sorted = [...filtered].sort((a, b) => {
-      const aVal = a[state.sort.column];
-      const bVal = b[state.sort.column];
+      let aVal = a[state.sort.column];
+      let bVal = b[state.sort.column];
+
+      if (state.sort.column === 'Neon Rate' || state.sort.column === 'Mega Rate') {
+        aVal = parseFloat(aVal) || 0;
+        bVal = parseFloat(bVal) || 0;
+      }
 
       const isANull = aVal === null || aVal === undefined || isNaN(aVal);
       const isBNull = bVal === null || bVal === undefined || isNaN(bVal);
