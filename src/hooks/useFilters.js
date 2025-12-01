@@ -41,6 +41,14 @@ export const useFilters = () => {
       );
     }
 
+    // Egg filter
+    if (!state.filters.showEggs) {
+      filtered = filtered.filter(pet => {
+        const hasNoNeonValue = !pet['Neon Value'] || pet['Neon Value'] === 0;
+        return !hasNoNeonValue;
+      });
+    }
+
     // Advanced filter
     const { advancedColumn, advancedCondition, advancedValue } = state.filters;
     if (advancedColumn !== 'None' && advancedCondition !== 'None' && advancedValue !== '') {
@@ -70,7 +78,7 @@ export const useFilters = () => {
       let aVal = a[state.sort.column];
       let bVal = b[state.sort.column];
 
-      if (state.sort.column === 'Neon Rate' || state.sort.column === 'Mega Rate') {
+      if (state.sort.column === 'Neon Value' || state.sort.column === 'Mega Value') {
         aVal = parseFloat(aVal) || 0;
         bVal = parseFloat(bVal) || 0;
       }

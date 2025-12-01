@@ -1,3 +1,5 @@
+import './FilterSection.css';
+
 const FilterSection = ({ filters, columnOptions, onUpdateFilter, onResetFilters }) => {
   const rarities = ['All', 'Common', 'Uncommon', 'Rare', 'Ultra-Rare', 'Legendary', 'Unknown'];
 
@@ -28,6 +30,14 @@ const FilterSection = ({ filters, columnOptions, onUpdateFilter, onResetFilters 
             value={filters.name}
             onChange={(e) => onUpdateFilter('name', e.target.value)}
           />
+        </div>
+        <div className="filter-group">
+          <button
+            className="toggle-eggs-button"
+            onClick={() => onUpdateFilter('showEggs', !filters.showEggs)}
+          >
+            {filters.showEggs ? 'Hide Eggs' : 'Show Eggs'}
+          </button>
         </div>
       </div>
 

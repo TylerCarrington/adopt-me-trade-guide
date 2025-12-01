@@ -14,9 +14,9 @@ const PetRow = ({ pet, onSelectPet }) => {
       <td className="rarity-cell">{pet.rarity}</td>
       <td className="year-cell">{pet.year}</td>
       <td className="calculation">{formatForDisplay('Value', pet['Regular Value'])}</td>
-      <td className="calculation">{formatForDisplay('Rate', pet['Neon Value'])}</td>
+      <td className="calculation">{formatForDisplay('Value', pet['Neon Value'])}</td>
       <td className="calculation">{formatForDisplay('Gain', pet['Neon Gain (N-4R)'])}</td>
-      <td className="calculation">{formatForDisplay('Rate', pet['Mega Value'])}</td>
+      <td className="calculation">{formatForDisplay('Value', pet['Mega Value'])}</td>
       <td className="calculation">{formatForDisplay('Gain', pet['Mega Gain (M-4N)'])}</td>
       <td className="calculation">
         {formatForDisplay('Weighted Gain', pet['Weighted Neon Gain'])}

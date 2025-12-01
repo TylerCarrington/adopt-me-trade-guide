@@ -8,8 +8,8 @@ const PetTable = ({ data, sort, onHeaderClick, onSelectPet }) => {
     { key: 'year', display: 'Year', sortable: true, class: 'year-cell' },
     { key: 'Regular Value', display: 'Value', sortable: true, class: 'calculation' },
     {
-      key: 'Neon Rate (N/R)',
-      display: 'Neon Rate',
+      key: 'Neon Value',
+      display: 'Neon Value',
       sortable: true,
       class: 'calculation',
     },
@@ -20,8 +20,8 @@ const PetTable = ({ data, sort, onHeaderClick, onSelectPet }) => {
       class: 'calculation',
     },
     {
-      key: 'Mega Rate (M/N)',
-      display: 'Mega Rate',
+      key: 'Mega Value',
+      display: 'Mega Value',
       sortable: true,
       class: 'calculation',
     },
