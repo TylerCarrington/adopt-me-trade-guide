@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { usePetDataContext } from '../hooks/usePetDataContext';
 import { useInventory } from '../hooks/useInventory';
 import { formatForDisplay } from '../utils/calculator.js';
+import { TASK_COUNTS } from '../constants.mjs';
 import './InventoryTab.css';
 
 const InventoryTab = ({ tabId, isActive, onSelectPet }) => {
@@ -35,6 +36,10 @@ const InventoryTab = ({ tabId, isActive, onSelectPet }) => {
       const megaTotal = (petInfo?.['Mega Value'] || 0) * (counts.mega || 0);
       const itemTotal = regTotal + neonTotal + megaTotal;
       
+      const neonGain = (petInfo?.['Neon Value'] || 0) - (petInfo?.['Regular Value'] || 0) * 4;
+      const tasks = TASK_COUNTS[petInfo?.rarity || 'Unknown'];
+      const weightedNeonGain = !isNaN(neonGain) ? (neonGain / tasks) * 100 : NaN;
+
       return {
         name: petName,
         counts,
@@ -49,6 +54,7 @@ const InventoryTab = ({ tabId, isActive, onSelectPet }) => {
         neonTotal,
         megaTotal,
         itemTotal,
+        weightedNeonGain,
       };
     })
     .sort((a, b) => {
@@ -90,6 +96,10 @@ const InventoryTab = ({ tabId, isActive, onSelectPet }) => {
         case 'total':
           aVal = a.itemTotal;
           bVal = b.itemTotal;
+          break;
+        case 'weightedNeonGain':
+          aVal = a.weightedNeonGain;
+          bVal = b.weightedNeonGain;
           break;
         default:
           return 0;
@@ -214,6 +224,13 @@ const InventoryTab = ({ tabId, isActive, onSelectPet }) => {
               >
                 Total Value {getSortIndicator('total')}
               </th>
+              <th 
+                className={`weighted-neon-gain sortable ${sort.column === 'weightedNeonGain' ? 'sorted' : ''}`}
+                onClick={() => handleSort('weightedNeonGain')}
+                title="Click to sort by weighted neon gain"
+              >
+                Weighted Neon Gain {getSortIndicator('weightedNeonGain')}
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -301,6 +318,10 @@ const InventoryTab = ({ tabId, isActive, onSelectPet }) => {
                   </td>
                   <td className="total-value">
                     <strong>{formatForDisplay('Value', itemTotal)} RP</strong>
+                  </td>
+                  <td className={`weighted-neon-gain ${item.weightedNeonGain >= 0 ? 'positive' : 'negative'}`}>
+                    {item.weightedNeonGain >= 0 ? '+' : ''}
+                    {formatForDisplay('Value', item.weightedNeonGain)} RP
                   </td>
                 </tr>
               );

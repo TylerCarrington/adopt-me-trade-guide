@@ -7,23 +7,49 @@ const TrendFilterSection = ({
   trendFilters,
   updateTrendFilter,
   resetTrendFilters,
+  showOnlyChanged,
+  setShowOnlyChanged,
 }) => {
+  const handlePeriodValueChange = (e) => {
+    const parsedValue = parseInt(e.target.value, 10);
+    setTrendPeriod({ ...trendPeriod, value: isNaN(parsedValue) ? '' : parsedValue });
+  };
+
+  const handlePeriodUnitChange = (e) => {
+    setTrendPeriod({ ...trendPeriod, unit: e.target.value });
+  };
+
   return (
     <div className="trend-filter-section">
       <div className="period-selector">
-        <label htmlFor="trend-period">Select Period:</label>
+        <label htmlFor="trend-period-value">Select Period:</label>
+        <input
+          id="trend-period-value"
+          type="number"
+          value={trendPeriod.value}
+          onChange={handlePeriodValueChange}
+          min="1"
+        />
         <select
-          id="trend-period"
-          value={trendPeriod}
-          onChange={(e) => setTrendPeriod(parseInt(e.target.value))}
+          id="trend-period-unit"
+          value={trendPeriod.unit}
+          onChange={handlePeriodUnitChange}
         >
-          <option value={1}>1 Day</option>
-          <option value={7}>1 Week</option>
-          <option value={14}>2 Weeks</option>
-          <option value={30}>1 Month</option>
-          <option value={90}>3 Months</option>
-          <option value={180}>6 Months</option>
+          <option value="days">Days</option>
+          <option value="weeks">Weeks</option>
+          <option value="months">Months</option>
+          <option value="years">Years</option>
         </select>
+      </div>
+
+      <div className="filter-row">
+        <label htmlFor="show-only-changed">Show Only Changed:</label>
+        <input
+          id="show-only-changed"
+          type="checkbox"
+          checked={showOnlyChanged}
+          onChange={(e) => setShowOnlyChanged(e.target.checked)}
+        />
       </div>
 
       <div className="filter-row">

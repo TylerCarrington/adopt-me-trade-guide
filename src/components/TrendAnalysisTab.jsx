@@ -18,6 +18,8 @@ const TrendAnalysisTab = ({ tabId, onSelectPet, isActive }) => {
     trendSort,
     updateTrendSort,
     resetTrendFilters,
+    showOnlyChanged,
+    setShowOnlyChanged,
   } = useTrendData(petData, historySnapshots);
 
   return (
@@ -33,6 +35,8 @@ const TrendAnalysisTab = ({ tabId, onSelectPet, isActive }) => {
         trendFilters={trendFilters}
         updateTrendFilter={updateTrendFilter}
         resetTrendFilters={resetTrendFilters}
+        showOnlyChanged={showOnlyChanged}
+        setShowOnlyChanged={setShowOnlyChanged}
       />
 
       <TrendTable

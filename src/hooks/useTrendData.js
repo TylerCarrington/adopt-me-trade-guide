@@ -1,12 +1,11 @@
 import { useState, useMemo, useCallback } from 'react';
-import { calculateTrendData, applyTrendFiltersAndSort } from '../utils/trend_analyzer.js';
 
 /**
  * Hook to manage trend data, filtering, and sorting
- * Mirrors the logic from trend_analyzer.mjs but in React with hooks
  */
 export const useTrendData = (petData, historySnapshots) => {
-  const [trendPeriod, setTrendPeriod] = useState(7); // Default 7 days
+  const [trendPeriod, setTrendPeriod] = useState({ value: 7, unit: 'days' }); // Default 7 days
+  const [showOnlyChanged, setShowOnlyChanged] = useState(true);
   const [trendFilters, setTrendFilters] = useState({
     nameFilter: '',
     rarityFilter: 'All',
@@ -19,6 +18,18 @@ export const useTrendData = (petData, historySnapshots) => {
     direction: 'desc',
   });
 
+  const daysToSubtract = useMemo(() => {
+    let multiplier = 1;
+    if (trendPeriod.unit === 'weeks') {
+      multiplier = 7;
+    } else if (trendPeriod.unit === 'months') {
+      multiplier = 30;
+    } else if (trendPeriod.unit === 'years') {
+      multiplier = 365;
+    }
+    return (trendPeriod.value || 1) * multiplier;
+  }, [trendPeriod]);
+
   // Calculate trend data whenever period or source data changes
   const rawTrendData = useMemo(() => {
     if (!petData || petData.length === 0 || !historySnapshots || historySnapshots.length === 0) {
@@ -27,7 +38,7 @@ export const useTrendData = (petData, historySnapshots) => {
 
     const today = new Date();
     const targetDate = new Date(today);
-    targetDate.setDate(today.getDate() - trendPeriod);
+    targetDate.setDate(today.getDate() - daysToSubtract);
 
     // Find closest historical snapshot
     const closestSnapshot = historySnapshots.reduce((prev, curr) => {
@@ -86,13 +97,23 @@ export const useTrendData = (petData, historySnapshots) => {
     });
 
     return trendData;
-  }, [petData, historySnapshots, trendPeriod]);
+  }, [petData, historySnapshots, daysToSubtract]);
 
   // Filter and sort trend data
   const filteredTrendData = useMemo(() => {
     const advValue = parseFloat(trendFilters.advancedValue) || 0;
 
     let filtered = rawTrendData.filter(pet => {
+      if (showOnlyChanged) {
+        const hasChanged =
+          (pet['Value Change'] !== null && pet['Value Change'] !== 0) ||
+          (pet['Neon Change'] !== null && pet['Neon Change'] !== 0) ||
+          (pet['Mega Change'] !== null && pet['Mega Change'] !== 0);
+        if (!hasChanged) {
+          return false;
+        }
+      }
+      
       // Rarity filter
       if (trendFilters.rarityFilter !== 'All' && pet.rarity !== trendFilters.rarityFilter) {
         return false;
@@ -146,7 +167,7 @@ export const useTrendData = (petData, historySnapshots) => {
     });
 
     return filtered;
-  }, [rawTrendData, trendFilters, trendSort]);
+  }, [rawTrendData, trendFilters, trendSort, showOnlyChanged]);
 
   // Update filter handlers
   const updateTrendFilter = useCallback((filterName, value) => {
@@ -184,6 +205,8 @@ export const useTrendData = (petData, historySnapshots) => {
     trendSort,
     updateTrendSort,
     resetTrendFilters,
+    showOnlyChanged,
+    setShowOnlyChanged,
   };
 };
 
