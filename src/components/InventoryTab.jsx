@@ -72,6 +72,8 @@ const InventoryTab = ({ tabId, isActive, onSelectPet }) => {
       const neonGain = (petInfo?.['Neon Value'] || 0) - (petInfo?.['Regular Value'] || 0) * 4;
       const tasks = TASK_COUNTS[petInfo?.rarity || 'Unknown'];
       const weightedNeonGain = !isNaN(neonGain) ? (neonGain / tasks) * 100 : NaN;
+      const neonValue = petInfo?.['Neon Value'] || 0;
+      const weightedNeonValue = !isNaN(neonValue) && tasks ? (neonValue / tasks) * 100 : NaN;
 
       return {
         name: petName,
@@ -88,6 +90,7 @@ const InventoryTab = ({ tabId, isActive, onSelectPet }) => {
         megaTotal,
         itemTotal,
         weightedNeonGain,
+        weightedNeonValue
       };
     })
     .sort((a, b) => {
@@ -134,6 +137,10 @@ const InventoryTab = ({ tabId, isActive, onSelectPet }) => {
           aVal = a.weightedNeonGain;
           bVal = b.weightedNeonGain;
           break;
+        case 'weightedNeonValue':
+            aVal = a.weightedNeonValue;
+            bVal = b.weightedNeonValue;
+            break;
         default:
           return 0;
       }
@@ -273,6 +280,13 @@ const InventoryTab = ({ tabId, isActive, onSelectPet }) => {
               >
                 Weighted Neon Gain {getSortIndicator('weightedNeonGain')}
               </th>
+              <th 
+                className={`weighted-neon-value sortable ${sort.column === 'weightedNeonValue' ? 'sorted' : ''}`}
+                onClick={() => handleSort('weightedNeonValue')}
+                title="Click to sort by weighted neon value"
+              >
+                Weighted Neon Value {getSortIndicator('weightedNeonValue')}
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -364,6 +378,9 @@ const InventoryTab = ({ tabId, isActive, onSelectPet }) => {
                   <td className={`weighted-neon-gain ${item.weightedNeonGain >= 0 ? 'positive' : 'negative'}`}>
                     {item.weightedNeonGain >= 0 ? '+' : ''}
                     {formatForDisplay('Value', item.weightedNeonGain)} RP
+                  </td>
+                  <td className="weighted-neon-value">
+                    {formatForDisplay('Value', item.weightedNeonValue)} RP
                   </td>
                 </tr>
               );
