@@ -12,8 +12,8 @@ const InventoryTab = ({ tabId, isActive, onSelectPet }) => {
   const petData = state.petData || [];
 
   const [sort, setSort] = useState({ column: 'name', direction: 'asc' });
-  const [filterValue, setFilterValue] = useState();
-  const [filterCondition, setFilterCondition] = useState();
+  const [filterValue, setFilterValue] = useState('');
+  const [filterCondition, setFilterCondition] = useState('None');
 
   // Calculate total inventory value
   const calculateTotalValue = () => {
@@ -29,19 +29,29 @@ const InventoryTab = ({ tabId, isActive, onSelectPet }) => {
     return total;
   };
 
+  const resetInventoryFilter = () => {
+    setFilterValue('');
+    setFilterCondition('None');
+  }
+
   const filterInventory = (pets) => {
-    if (filterValue === '') return pets;
+    if (filterCondition === 'None' || filterValue === '') {
+      return pets;
+    }
 
     const value = parseInt(filterValue, 10);
+    if (isNaN(value)) {
+      return pets;
+    }
 
     return pets.filter(pet => {
       const regularCount = pet.counts.regular || 0;
       switch (filterCondition) {
-        case 'at-least':
+        case '>=':
           return regularCount >= value;
-        case 'less-than':
+        case '<':
           return regularCount < value;
-        case 'exactly':
+        case '=':
           return regularCount === value;
         default:
           return true;
@@ -182,6 +192,7 @@ const InventoryTab = ({ tabId, isActive, onSelectPet }) => {
         setFilterValue={setFilterValue}
         filterCondition={filterCondition}
         setFilterCondition={setFilterCondition}
+        resetInventoryFilter={resetInventoryFilter}
       />
 
       {filteredInventory.length === 0 ? (
