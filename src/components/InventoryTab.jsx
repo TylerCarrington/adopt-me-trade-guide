@@ -3,14 +3,17 @@ import { usePetDataContext } from '../hooks/usePetDataContext';
 import { useInventory } from '../hooks/useInventory';
 import { formatForDisplay } from '../utils/calculator.js';
 import { TASK_COUNTS } from '../constants.mjs';
+import InventoryFilter from './InventoryFilter';
 import './InventoryTab.css';
 
 const InventoryTab = ({ tabId, isActive, onSelectPet }) => {
   const { state } = usePetDataContext();
   const { inventory, incrementInventory } = useInventory();
   const petData = state.petData || [];
-  
+
   const [sort, setSort] = useState({ column: 'name', direction: 'asc' });
+  const [filterValue, setFilterValue] = useState();
+  const [filterCondition, setFilterCondition] = useState();
 
   // Calculate total inventory value
   const calculateTotalValue = () => {
@@ -24,6 +27,26 @@ const InventoryTab = ({ tabId, isActive, onSelectPet }) => {
       }
     });
     return total;
+  };
+
+  const filterInventory = (pets) => {
+    if (filterValue === '') return pets;
+
+    const value = parseInt(filterValue, 10);
+
+    return pets.filter(pet => {
+      const regularCount = pet.counts.regular || 0;
+      switch (filterCondition) {
+        case 'at-least':
+          return regularCount >= value;
+        case 'less-than':
+          return regularCount < value;
+        case 'exactly':
+          return regularCount === value;
+        default:
+          return true;
+      }
+    });
   };
 
   // Get pets in inventory with their data
@@ -116,6 +139,7 @@ const InventoryTab = ({ tabId, isActive, onSelectPet }) => {
       return 0;
     });
 
+  const filteredInventory = filterInventory(inventoryPets);
   const totalValue = calculateTotalValue();
 
   const handleSort = (column) => {
@@ -153,9 +177,16 @@ const InventoryTab = ({ tabId, isActive, onSelectPet }) => {
         </div>
       </div>
 
-      {inventoryPets.length === 0 ? (
+      <InventoryFilter 
+        filterValue={filterValue}
+        setFilterValue={setFilterValue}
+        filterCondition={filterCondition}
+        setFilterCondition={setFilterCondition}
+      />
+
+      {filteredInventory.length === 0 ? (
         <div className="empty-inventory">
-          <p>Your inventory is empty. Add pets from the Value Analysis tab to get started!</p>
+          <p>Your inventory is empty or no pets match the current filter.</p>
         </div>
       ) : (
         <table className="inventory-table">
@@ -234,7 +265,7 @@ const InventoryTab = ({ tabId, isActive, onSelectPet }) => {
             </tr>
           </thead>
           <tbody>
-            {inventoryPets.map((item) => {
+            {filteredInventory.map((item) => {
               const regTotal = (item.petInfo['Regular Value'] || 0) * (item.counts.regular || 0);
               const neonTotal = (item.petInfo['Neon Value'] || 0) * (item.counts.neon || 0);
               const megaTotal = (item.petInfo['Mega Value'] || 0) * (item.counts.mega || 0);

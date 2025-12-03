@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { usePetData } from './hooks/usePetData';
 import { useFilters } from './hooks/useFilters';
 import { usePetDataContext } from './hooks/usePetDataContext';
@@ -16,6 +16,27 @@ function App() {
   const { isLoading, error, loadData } = usePetData();
   const { filteredData, filters, sort, updateFilter, resetFilters, updateSort } = useFilters();
 
+  useEffect(() => {
+    const handleHashChange = () => {
+      const hash = window.location.hash.replace('#', '');
+      if (hash) {
+        setActiveTab(hash);
+      }
+    };
+
+    window.addEventListener('hashchange', handleHashChange);
+    handleHashChange(); // Set initial tab based on hash
+
+    return () => {
+      window.removeEventListener('hashchange', handleHashChange);
+    };
+  }, []);
+
+  const handleTabChange = (tabId) => {
+    setActiveTab(tabId);
+    window.location.hash = tabId;
+  };
+
   const handleRefresh = () => {
     // Call with forceRefresh=true to bypass cache and fetch fresh data
     loadData(true);
@@ -31,9 +52,9 @@ function App() {
 
   return (
     <div className="app">
-      <Header onRefresh={handleRefresh} activeTab={activeTab} onTabChange={setActiveTab} />
+      <Header onRefresh={handleRefresh} activeTab={activeTab} onTabChange={handleTabChange} />
       <div className="app-content">
-        <TabContainer activeTab={activeTab} onTabChange={setActiveTab}>
+        <TabContainer activeTab={activeTab} onTabChange={handleTabChange}>
           <ValueAnalysisTab
             tabId="value-analysis"
             isActive={activeTab === 'value-analysis'}

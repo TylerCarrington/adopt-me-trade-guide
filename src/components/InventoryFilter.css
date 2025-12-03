@@ -1,0 +1,55 @@
+.inventory-filter-section {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border: 1px solid #dee2e6;
+  }
+  
+  .inventory-filter-section h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 1.2em;
+    color: #343a40;
+  }
+  
+  .inventory-filter-section .filter-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .inventory-filter-section .adv-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+  
+  .inventory-filter-section select,
+  .inventory-filter-section input[type="number"] {
+    padding: 8px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 1rem;
+    background-color: #fff;
+  }
+  
+  .inventory-filter-section input[type="number"] {
+    width: 100px;
+  }
+  
+  .inventory-filter-section .clear-btn {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.2s;
+  }
+  
+  .inventory-filter-section .clear-btn:hover {
+    background-color: #c82333;
+  }
+  
