@@ -19,7 +19,7 @@ export function calculatePetMetrics(pets) {
         const weightedNeonGain = !isNaN(neonGain) ? (neonGain / tasks) * 100 : NaN;
         const weightedMegaGain = !isNaN(megaGain) ? (megaGain / tasks) * 100 : NaN;
 
-        const taskFactor = (300 - tasks) / 3000;
+        const taskFactor = Math.min((300 - tasks) / 2000);
         const ppv = regular * 0.1 + (neon / 4) * 0.6 + (mega / 16) * 0.3 + taskFactor;
         const pr = ppv - regular;
         
