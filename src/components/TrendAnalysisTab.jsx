@@ -43,6 +43,7 @@ const TrendAnalysisTab = ({ tabId, onSelectPet, isActive }) => {
         trendData={filteredTrendData}
         trendSort={trendSort}
         onSortChange={updateTrendSort}
+        onSelectPet={onSelectPet}
       />
     </div>
   );

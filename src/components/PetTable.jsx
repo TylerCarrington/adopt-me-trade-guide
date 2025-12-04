@@ -7,6 +7,8 @@ const PetTable = ({ data, sort, onHeaderClick, onSelectPet }) => {
     { key: 'rarity', display: 'Rarity', sortable: true, class: 'rarity-cell' },
     { key: 'year', display: 'Year', sortable: true, class: 'year-cell' },
     { key: 'Regular Value', display: 'Value', sortable: true, class: 'calculation' },
+    { key: 'PPV', display: 'PPV', sortable: true, class: 'calculation' },
+    { key: 'P-R', display: 'P-R', sortable: true, class: 'calculation' },
     {
       key: 'Neon Value',
       display: 'Neon Value',

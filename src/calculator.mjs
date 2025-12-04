@@ -18,6 +18,10 @@ export function calculatePetMetrics(pets) {
         
         const weightedNeonGain = !isNaN(neonGain) ? (neonGain / tasks) * 100 : NaN;
         const weightedMegaGain = !isNaN(megaGain) ? (megaGain / tasks) * 100 : NaN;
+
+        const taskFactor = (300 - tasks) / 3000;
+        const ppv = regular * 0.1 + (neon / 4) * 0.6 + (mega / 16) * 0.3 + taskFactor;
+        const pr = ppv - regular;
         
         return {
             name: pet.name,
@@ -27,6 +31,8 @@ export function calculatePetMetrics(pets) {
             'Regular Value': regular,
             'Neon Value': neon,
             'Mega Value': mega,
+            'PPV': ppv,
+            'P-R': pr,
             'Neon Rate (N/R)': neonRate,
             'Neon Gain (N-4R)': neonGain,
             'Weighted Neon Gain': weightedNeonGain, 
@@ -44,7 +50,7 @@ export function calculatePetMetrics(pets) {
 export function formatForDisplay(key, val) {
     if (isNaN(val) || val === null) return '—';
     
-    if (key.includes('Value') || key.includes('Gain') || key.includes('Rate') || key === 'Tasks') {
+    if (key.includes('Value') || key.includes('Gain') || key.includes('Rate') || key === 'Tasks' || key === 'PPV' || key === 'P-R') {
         return val.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     }
     

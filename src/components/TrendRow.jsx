@@ -2,7 +2,7 @@ import React from 'react';
 import { formatForDisplay } from '../utils/calculator.js';
 import './TrendRow.css';
 
-const TrendRow = ({ pet }) => {
+const TrendRow = ({ pet, onSelectPet }) => {
   const getChangeColor = (value) => {
     if (value === null || isNaN(value)) return 'neutral';
     if (value > 0) return 'positive';
@@ -15,13 +15,19 @@ const TrendRow = ({ pet }) => {
     return value >= 0 ? `+${value.toFixed(2)}` : value.toFixed(2);
   };
 
+  const handleRowClick = () => {
+    if (onSelectPet) {
+      onSelectPet(pet);
+    }
+  };
+
   return (
-    <tr className="trend-row">
+    <tr className="trend-row" onClick={handleRowClick}>
       <td className="pet-image">
         {pet.image_url ? (
           <div>
-          <img src={pet.image_url} alt={pet.name} title={pet.name} />
-          <span>{pet.name}</span>
+            <img src={pet.image_url} alt={pet.name} title={pet.name} />
+            <span>{pet.name}</span>
           </div>
         ) : (
           <span>{pet.name}</span>
@@ -32,7 +38,7 @@ const TrendRow = ({ pet }) => {
       
       {/* Current Value */}
       <td className="value">
-        {formatForDisplay('Value', pet['Regular Value'])}
+        {formatForDisplay('Value', pet['Regular Value'])} 
       </td>
       
       {/* Value Change Amount */}
@@ -45,9 +51,39 @@ const TrendRow = ({ pet }) => {
         {formatChangeValue(pet['Value Change %'])}%
       </td>
       
+      {/* PPV */}
+      <td className="value">
+        {formatForDisplay('PPV', pet['PPV'])} 
+      </td>
+
+      {/* PPV Change Amount */}
+      <td className={`change ${getChangeColor(pet['PPV Change'])}`}>
+        {formatChangeValue(pet['PPV Change'])}
+      </td>
+      
+      {/* PPV Change % */}
+      <td className={`change-percent ${getChangeColor(pet['PPV Change %'])}`}>
+        {formatChangeValue(pet['PPV Change %'])}%
+      </td>
+
+      {/* P-R */}
+      <td className="value">
+        {formatForDisplay('P-R', pet['P-R'])} 
+      </td>
+
+      {/* P-R Change Amount */}
+      <td className={`change ${getChangeColor(pet['P-R Change'])}`}>
+        {formatChangeValue(pet['P-R Change'])}
+      </td>
+      
+      {/* P-R Change % */}
+      <td className={`change-percent ${getChangeColor(pet['P-R Change %'])}`}>
+        {formatChangeValue(pet['P-R Change %'])}%
+      </td>
+      
       {/* Neon Value */}
       <td className="value">
-        {formatForDisplay('Value', pet['Neon Value'])}
+        {formatForDisplay('Value', pet['Neon Value'])} 
       </td>
       
       {/* Neon Change Amount */}
@@ -62,7 +98,7 @@ const TrendRow = ({ pet }) => {
       
       {/* Mega Value */}
       <td className="value">
-        {formatForDisplay('Value', pet['Mega Value'])}
+        {formatForDisplay('Value', pet['Mega Value'])} 
       </td>
       
       {/* Mega Change Amount */}

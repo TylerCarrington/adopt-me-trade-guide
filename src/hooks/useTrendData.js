@@ -71,12 +71,18 @@ export const useTrendData = (petData, historySnapshots) => {
         'Regular Value': currentPet['Regular Value'] || null,
         'Neon Value': currentPet['Neon Value'] || null,
         'Mega Value': currentPet['Mega Value'] || null,
+        'PPV': currentPet['PPV'] || null,
+        'P-R': currentPet['P-R'] || null,        
         'Value Change': null,
         'Value Change %': null,
         'Neon Change': null,
         'Neon Change %': null,
         'Mega Change': null,
         'Mega Change %': null,
+        'PPV Change': null,
+        'PPV Change %': null,
+        'P-R Change': null,
+        'P-R Change %': null,
       };
 
       if (previousPet) {
@@ -91,6 +97,14 @@ export const useTrendData = (petData, historySnapshots) => {
         const megaTrend = calculateChange(currentPet['Mega Value'], previousPet.mega);
         trend['Mega Change'] = megaTrend.change;
         trend['Mega Change %'] = megaTrend.percent;
+
+        const ppvTrend = calculateChange(currentPet['PPV'], previousPet.PPV);
+        trend['PPV Change'] = ppvTrend.change;
+        trend['PPV Change %'] = ppvTrend.percent;
+
+        const prTrend = calculateChange(currentPet['P-R'], previousPet['P-R']);
+        trend['P-R Change'] = prTrend.change;
+        trend['P-R Change %'] = prTrend.percent;
       }
 
       trendData.push(trend);
@@ -108,7 +122,9 @@ export const useTrendData = (petData, historySnapshots) => {
         const hasChanged =
           (pet['Value Change'] !== null && pet['Value Change'] !== 0) ||
           (pet['Neon Change'] !== null && pet['Neon Change'] !== 0) ||
-          (pet['Mega Change'] !== null && pet['Mega Change'] !== 0);
+          (pet['Mega Change'] !== null && pet['Mega Change'] !== 0) ||
+          (pet['P-R Change'] !== null && pet['P-R Change'] !== 0) ||
+          (pet['PPV Change'] !== null && pet['PPV Change'] !== 0);
         if (!hasChanged) {
           return false;
         }

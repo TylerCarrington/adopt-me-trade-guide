@@ -2,7 +2,7 @@ import React from 'react';
 import TrendRow from './TrendRow';
 import './TrendTable.css';
 
-const TrendTable = ({ trendData, trendSort, onSortChange }) => {
+const TrendTable = ({ trendData, trendSort, onSortChange, onSelectPet }) => {
   const headers = [
     { key: 'image_url', display: 'Pet', sortable: false },
     { key: 'rarity', display: 'Rarity', sortable: true },
@@ -10,6 +10,12 @@ const TrendTable = ({ trendData, trendSort, onSortChange }) => {
     { key: 'Regular Value', display: 'Current Value', sortable: true },
     { key: 'Value Change', display: 'Change', sortable: true },
     { key: 'Value Change %', display: 'Change %', sortable: true },
+    { key: 'PPV', display: 'PPV', sortable: true },
+    { key: 'PPV Change', display: 'PPV Change', sortable: true },
+    { key: 'PPV Change %', display: 'PPV %', sortable: true },
+    { key: 'P-R', display: 'P-R', sortable: true },
+    { key: 'P-R Change', display: 'P-R Change', sortable: true },
+    { key: 'P-R Change %', display: 'P-R %', sortable: true },
     { key: 'Neon Value', display: 'Current Neon', sortable: true },
     { key: 'Neon Change', display: 'Neon Change', sortable: true },
     { key: 'Neon Change %', display: 'Neon %', sortable: true },
@@ -55,7 +61,7 @@ const TrendTable = ({ trendData, trendSort, onSortChange }) => {
         </thead>
         <tbody>
           {trendData.map((pet) => (
-            <TrendRow key={pet.name} pet={pet} />
+            <TrendRow key={pet.name} pet={pet} onSelectPet={onSelectPet} />
           ))}
         </tbody>
       </table>

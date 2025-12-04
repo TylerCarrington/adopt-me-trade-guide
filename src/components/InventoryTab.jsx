@@ -74,6 +74,8 @@ const InventoryTab = ({ tabId, isActive, onSelectPet }) => {
       const weightedNeonGain = !isNaN(neonGain) ? (neonGain / tasks) * 100 : NaN;
       const neonValue = petInfo?.['Neon Value'] || 0;
       const weightedNeonValue = !isNaN(neonValue) && tasks ? (neonValue / tasks) * 100 : NaN;
+      const ppv = petInfo?.['PPV'] || 0;
+      const pr = petInfo?.['P-R'] || 0;
 
       return {
         name: petName,
@@ -83,6 +85,8 @@ const InventoryTab = ({ tabId, isActive, onSelectPet }) => {
           'Regular Value': 0,
           'Neon Value': 0,
           'Mega Value': 0,
+          'PPV': 0,
+          'P-R': 0,
           rarity: 'Unknown',
         },
         regTotal,
@@ -90,7 +94,9 @@ const InventoryTab = ({ tabId, isActive, onSelectPet }) => {
         megaTotal,
         itemTotal,
         weightedNeonGain,
-        weightedNeonValue
+        weightedNeonValue,
+        ppv,
+        pr,
       };
     })
     .sort((a, b) => {
@@ -141,6 +147,14 @@ const InventoryTab = ({ tabId, isActive, onSelectPet }) => {
             aVal = a.weightedNeonValue;
             bVal = b.weightedNeonValue;
             break;
+        case 'ppv':
+            aVal = a.ppv;
+            bVal = b.ppv;
+            break;
+        case 'pr':
+          aVal = a.pr;
+          bVal = b.pr;
+          break;
         default:
           return 0;
       }
@@ -273,6 +287,20 @@ const InventoryTab = ({ tabId, isActive, onSelectPet }) => {
               >
                 Total Value {getSortIndicator('total')}
               </th>
+              <th
+                className={`ppv-value sortable ${sort.column === 'ppv' ? 'sorted' : ''}`}
+                onClick={() => handleSort('ppv')}
+                title="Click to sort by PPV"
+              >
+                PPV {getSortIndicator('ppv')}
+              </th>
+              <th
+                className={`pr-value sortable ${sort.column === 'pr' ? 'sorted' : ''}`}
+                onClick={() => handleSort('pr')}
+                title="Click to sort by P-R"
+              >
+                P-R {getSortIndicator('pr')}
+              </th>
               <th 
                 className={`weighted-neon-gain sortable ${sort.column === 'weightedNeonGain' ? 'sorted' : ''}`}
                 onClick={() => handleSort('weightedNeonGain')}
@@ -374,6 +402,12 @@ const InventoryTab = ({ tabId, isActive, onSelectPet }) => {
                   </td>
                   <td className="total-value">
                     <strong>{formatForDisplay('Value', itemTotal)} RP</strong>
+                  </td>
+                  <td className="ppv-value">
+                    {formatForDisplay('PPV', item.ppv)}
+                  </td>
+                  <td className="pr-value">
+                    {formatForDisplay('P-R', item.pr)}
                   </td>
                   <td className={`weighted-neon-gain ${item.weightedNeonGain >= 0 ? 'positive' : 'negative'}`}>
                     {item.weightedNeonGain >= 0 ? '+' : ''}
