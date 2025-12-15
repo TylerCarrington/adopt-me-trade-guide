@@ -67,7 +67,7 @@ const FilterSection = ({ filters, columnOptions, onUpdateFilter, onResetFilters 
           >
             <option value="None">-- Select Condition --</option>
             <option value=">">Greater Than (&gt;)</option>
-            <option value="<">Less Than (&lt;)</option>
+            <option value="<=">Less Than or Equal To (&lt;=)</option>
             <option value="=">Equal To (=)</option>
           </select>
         </div>

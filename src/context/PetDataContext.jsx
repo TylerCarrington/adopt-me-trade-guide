@@ -10,8 +10,8 @@ const initialState = {
   filters: {
     rarity: 'All',
     name: '',
-    advancedColumn: 'None',
-    advancedCondition: 'None',
+    advancedColumn: 'Regular Value',
+    advancedCondition: '<=',
     advancedValue: '',
   },
   sort: {
@@ -61,8 +61,8 @@ export const reducer = (state, action) => {
         filters: {
           rarity: 'All',
           name: '',
-          advancedColumn: 'None',
-          advancedCondition: 'None',
+          advancedColumn: 'Regular Value',
+          advancedCondition: '<=',
           advancedValue: '',
         },
       };

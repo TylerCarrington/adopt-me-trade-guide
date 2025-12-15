@@ -62,8 +62,8 @@ export const useFilters = () => {
           switch (advancedCondition) {
             case '>':
               return petValue > numValue;
-            case '<':
-              return petValue < numValue;
+            case '<=':
+              return petValue <= numValue;
             case '=':
               return Math.abs(petValue - numValue) < 0.001;
             default:

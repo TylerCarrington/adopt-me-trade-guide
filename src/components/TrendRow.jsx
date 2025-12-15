@@ -51,36 +51,6 @@ const TrendRow = ({ pet, onSelectPet }) => {
         {formatChangeValue(pet['Value Change %'])}%
       </td>
       
-      {/* PPV */}
-      <td className="value">
-        {formatForDisplay('PPV', pet['PPV'])} 
-      </td>
-
-      {/* PPV Change Amount */}
-      <td className={`change ${getChangeColor(pet['PPV Change'])}`}>
-        {formatChangeValue(pet['PPV Change'])}
-      </td>
-      
-      {/* PPV Change % */}
-      <td className={`change-percent ${getChangeColor(pet['PPV Change %'])}`}>
-        {formatChangeValue(pet['PPV Change %'])}%
-      </td>
-
-      {/* P-R */}
-      <td className="value">
-        {formatForDisplay('P-R', pet['P-R'])} 
-      </td>
-
-      {/* P-R Change Amount */}
-      <td className={`change ${getChangeColor(pet['P-R Change'])}`}>
-        {formatChangeValue(pet['P-R Change'])}
-      </td>
-      
-      {/* P-R Change % */}
-      <td className={`change-percent ${getChangeColor(pet['P-R Change %'])}`}>
-        {formatChangeValue(pet['P-R Change %'])}%
-      </td>
-      
       {/* Neon Value */}
       <td className="value">
         {formatForDisplay('Value', pet['Neon Value'])} 
