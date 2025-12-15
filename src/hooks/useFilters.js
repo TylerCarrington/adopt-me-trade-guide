@@ -16,7 +16,11 @@ export const useFilters = () => {
   };
 
   const updateSort = (column, direction = null) => {
-    const newDirection = direction || (state.sort.column === column && state.sort.direction === 'asc' ? 'desc' : 'asc');
+    const newDirection = direction
+      ? direction
+      : state.sort.column === column
+        ? state.sort.direction === 'desc' ? 'asc' : 'desc'
+        : 'desc';
     dispatch({
       type: 'UPDATE_SORT',
       payload: { column, direction: newDirection },

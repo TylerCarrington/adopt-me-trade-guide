@@ -11,6 +11,7 @@ export function calculatePetMetrics(pets) {
 
         const neonRate = (!isNaN(neon) && !isNaN(regular) && regular !== 0) ? (neon / regular) : NaN;
         const neonGain = (!isNaN(neon) && !isNaN(regular)) ? (neon - regular * 4) : NaN; 
+        const neonGainPercent = (!isNaN(neonGain) && regular > 0) ? (neonGain / regular) * 100 : NaN;
         const megaRate = (!isNaN(mega) && !isNaN(neon) && neon !== 0) ? (mega / neon) : NaN;
         const megaGain = (!isNaN(mega) && !isNaN(neon)) ? (mega - neon * 4) : NaN; 
         
@@ -19,16 +20,23 @@ export function calculatePetMetrics(pets) {
         const weightedNeonGain = !isNaN(neonGain) ? (neonGain / tasks) * 100 : NaN;
         const weightedMegaGain = !isNaN(megaGain) ? (megaGain / tasks) * 100 : NaN;
 
+        const taskFactor = Math.min((300 - tasks) / 2000);
+        const ppv = regular * 0.1 + (neon / 4) * 0.6 + (mega / 16) * 0.3 + taskFactor;
+        const pr = ppv - regular;
+
         return {
             name: pet.name,
             rarity: pet.rarity,
             year: pet.year,
             image_url: pet.image_url,
             'Regular Value': regular,
+            'PPV': ppv,
+            'P-R': pr,
             'Neon Value': neon,
             'Mega Value': mega,
             'Neon Rate (N/R)': neonRate,
             'Neon Gain (N-4R)': neonGain,
+            'Neon Gain %': neonGainPercent,
             'Weighted Neon Gain': weightedNeonGain, 
             'Mega Rate (M/N)': megaRate,
             'Mega Gain (M-4N)': megaGain,
@@ -43,9 +51,15 @@ export function calculatePetMetrics(pets) {
  */
 export function formatForDisplay(key, val) {
     if (isNaN(val) || val === null) return '—';
+
+    let formattedVal = val.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+    if (key.includes('%')) {
+        return `${formattedVal}%`;
+    }
     
-    if (key.includes('Value') || key.includes('Gain') || key.includes('Rate') || key === 'Tasks') {
-        return val.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    if (key.includes('Value') || key.includes('Gain') || key.includes('Rate') || key === 'Tasks' || key === 'PPV' || key === 'P-R') {
+        return formattedVal;
     }
     
     return val.toLocaleString(undefined, { maximumFractionDigits: 2 });

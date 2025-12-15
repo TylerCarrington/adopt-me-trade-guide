@@ -22,6 +22,12 @@ const PetTable = ({ data, sort, onHeaderClick, onSelectPet }) => {
       class: 'calculation',
     },
     {
+      key: 'Neon Gain %',
+      display: 'Neon Gain %',
+      sortable: true,
+      class: 'calculation',
+    },
+    {
       key: 'Mega Value',
       display: 'Mega Value',
       sortable: true,

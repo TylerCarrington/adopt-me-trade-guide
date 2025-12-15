@@ -18,6 +18,7 @@ const PetRow = ({ pet, onSelectPet }) => {
       <td className="calculation">{formatForDisplay('P-R', pet['P-R'])}</td>
       <td className="calculation">{formatForDisplay('Value', pet['Neon Value'])}</td>
       <td className="calculation">{formatForDisplay('Gain', pet['Neon Gain (N-4R)'])}</td>
+      <td className="calculation">{formatForDisplay('Neon Gain %', pet['Neon Gain %'])}</td>
       <td className="calculation">{formatForDisplay('Value', pet['Mega Value'])}</td>
       <td className="calculation">{formatForDisplay('Gain', pet['Mega Gain (M-4N)'])}</td>
       <td className="calculation">
